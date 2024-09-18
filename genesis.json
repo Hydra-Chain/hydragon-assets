@@ -165,35 +165,35 @@
                     {
                         "address": "0x94bc8eCfd8D8CD7CBE02b79F05b7b4B2eDEFe60E",
                         "blsKey": "0e2b352547a9273f4e3d8a6e5077e3821d28bdc83e2d4acbdf9a2dfb7681321a199a203f2050b820605592117bbc8bd640e3991b54a47999e78bae82d663ad532544d59946b813f451c4aedd9037b145767b205571e2adc67b992658fea7a2f72c6cae2aee47ec30c2e5c43a773b7a379ec5608a4d72b7a247bfd1f2f41e7f77",
-                        "blsSignature": "",
+                        "blsSignature": "2945dbaa5e39b3f7efbaaa1356fbf4c8a8642652070a1853fd885799e93671311e84f901de8f686c83e55726e8ef338cc2ab025f7e195ce675ace08d7d51b17d",
                         "stake": "0x32d26d12e980b600000",
                         "multiAddr": "/ip4/64.23.130.42/tcp/10001/p2p/16Uiu2HAmFNJVGm5q5wJwVVbufFeMfwJv5GZyTb1yWY33oPMpiMvH"
                     },
                     {
                         "address": "0xc297704545E3673B58b6640d79Ade1dEdBfe8a2A",
                         "blsKey": "2f8b814ba890fb689c835e7409065caaf2eb0fb61cd31230a7981efc76e5e41d01eeedc0f3d274377ce7e99e9e73906cb2916b1656f9f1fe9ef023cffb2d6215122a9535633f3cdddab4993e0d9ae3282a31f3a81099b7c93f1825b00046d8fd0bc63f0d68d8711136552b575642dfd16b694d75bf187a2005042288e8c29adc",
-                        "blsSignature": "",
+                        "blsSignature": "08c6abb60cecaba919c5bb4e71c3a4c5f40e512ffd17f0ca153479e21b093a3e1f95da8a158bcafe66d7c8391fa7e27b2b26a4886dac6553dd313df643594ad3",
                         "stake": "0x32d26d12e980b600000",
                         "multiAddr": "/ip4/64.23.170.137/tcp/10001/p2p/16Uiu2HAm3BeFxMqSVyg2aK7jiLGEe5GNq6BiDLbmuMXNBg1PQk2y"
                     },
                     {
                         "address": "0x0827c44B3129c4f98aCe2Cb610AdEB77590b46Aa",
                         "blsKey": "235a2064431c2a702448cb41bfb7f27b54b5a7eb6dcdae4cef3e2f861b224fa0163df46e1f126e7f0357fdc1a85d73e8dfcc0bbdd0dfe93458acabd22203fbfb15c56f876a81a777a0ba2e3893cb5946c716cc37ed8c7a481d64ecf35e0df044218253a600e7ef8d99e181c6ba94a5f75d37ad0b949b1b1f6b16455a6a1d0e5d",
-                        "blsSignature": "",
+                        "blsSignature": "1a8ced2da65907c76228f0ff51e3a1b8fe0e59d0e11d6882357ae950ff488fe80db6ebdffeceabaf0680c7335dbef0f64d5e401bafb063f4f0345ee10e06a008",
                         "stake": "0x32d26d12e980b600000",
                         "multiAddr": "/ip4/64.23.138.238/tcp/10001/p2p/16Uiu2HAkzEwxyL1K2Zd6359SDJ8WASN36rRq3tj3xT1Df6RfUvMb"
                     },
                     {
                         "address": "0x84deaA5aDdd12D794941dA31690A9dec5B74ddB2",
                         "blsKey": "247c51897e9185ee4e578ff4ab5293bef85ccb49b6679260ee83b1f6a173e6462e090f563bbf6ff55e9f3d1bd13bb6cabc4008c638722452883fd5b66bc467ce255c2f6421ed408f47c402a5e3f7e59fd9d3a0bb6f1db565b2014f644beb5c3e2b9b918ba624256cce9a93a48fabed927d9ee8ac2097a81374da0141db513f32",
-                        "blsSignature": "",
+                        "blsSignature": "21f8731517df3ab62b9314abb05f009b29e87dcfc44881c7c1132bb580518ffb216ff835cb6e0419fd7b30a9a49af07c21d1e4cf63651a2e4252a76bcd32befc",
                         "stake": "0x32d26d12e980b600000",
                         "multiAddr": "/ip4/64.23.170.137/tcp/20001/p2p/16Uiu2HAmLTVfVLBEN8Hn95AeyoUf1pk7svxeoEtYPc4ZM5WUbj2d"
                     },
                     {
                         "address": "0xc3299b294546C7ca8ac41552daFBe2ea0E6a909b",
                         "blsKey": "0c2efbe2c5a9237359c2363396f41a19406356dffd3cb5e4a007a1e5a6d2539f1a91ce13ced9d3d98db6e437233c9f48808a810ea4eb6bb8364debf5ce1eea7709d2d23186e77528eb7851a481b439c4a47d515d796f075bdecb8c9575a7933f22d6ee6c63d592ca2faca6f06d94cfe2ba9ccf3ebd1d1046a61927a95101c9a8",
-                        "blsSignature": "",
+                        "blsSignature": "144222e9fc5bc78beef46f907c8cc3ab3780ecafa9ac9d6d2962c600ea3db09802af8cbe75c901abcdce1dc262637a81b92ca7381718b99682de24fd84607f7e",
                         "stake": "0x32d26d12e980b600000",
                         "multiAddr": "/ip4/64.23.138.238/tcp/20001/p2p/16Uiu2HAm7hzLeMBoHsMA4fjyDoye9XUyAj1biDN8eCm3v8TXMsSg"
                     }
