@@ -275,10 +275,7 @@
     "burnContractDestinationAddress": "0x0000000000000000000000000000000000000000"
   },
   "bootnodes": [
-    "/dns4/node-1/tcp/1478/p2p/16Uiu2HAm7N3dMkjNDiXewbbtYh1LV5SBLh6uHwA4uGyiEH2WjsR4",
-    "/dns4/node-2/tcp/1478/p2p/16Uiu2HAm6Yjj5FJMRVq9dbbmbh1CZNwJLRVg5AYmyJrJ6P5yZzpC",
-    "/dns4/node-3/tcp/1478/p2p/16Uiu2HAmBdsxqHWjSYgnRmW43y4b6AFrwvW8gYgGUQNNYcjop4qj",
-    "/dns4/node-4/tcp/1478/p2p/16Uiu2HAmVnpN3sQM2h9eKbhNDAxHKjG1DvqFH1rDsqTKgMAtYisq",
-    "/dns4/node-5/tcp/1478/p2p/16Uiu2HAkxkaCxWPa2bbyBD6fT25fDAqkbn8Q8E53UEEYBkKFmDLY"
+    "/ip4/157.230.97.184/tcp/10001/p2p/16Uiu2HAm7N3dMkjNDiXewbbtYh1LV5SBLh6uHwA4uGyiEH2WjsR4",
+    "/ip4/157.230.97.184/tcp/20001/p2p/16Uiu2HAm6Yjj5FJMRVq9dbbmbh1CZNwJLRVg5AYmyJrJ6P5yZzpC"
   ]
 }
