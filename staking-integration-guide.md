@@ -1,4 +1,4 @@
-# Hydra Staking and Delegation integration Guide
+# Hydra Staking and Delegation Integration Guide
 
 ## Get Started
 
@@ -26,7 +26,17 @@ HydraChain: Manages validator operations, epochs, and BLS cryptographic function
 HydraStaking: Tracks validator stakes and distributes rewards.
 HydraDelegation: Handles delegation pools, rewards, and commissions.
 VestingManagerFactory: Enables users to create and manage vested positions.
-RewardWallet: Automates reward distribution.
+APRCalculator: Managing APR and reward bonuses.
+LiquidityToken: Token, that the user receives after delegating/staking.
+
+#### Contracts addresses
+
+- HydraChainContract: 0x0000000000000000000000000000000000000101
+- HydraStaking: 0x0000000000000000000000000000000000000104
+- HydraDelegation: 0x0000000000000000000000000000000000000107
+- VestingManagerFactory: 0x0000000000000000000000000000000000000108
+- APRCalculatorContract: 0x0000000000000000000000000000000000000109
+- LiquidityToken: 0x0000000000000000000000000000000000001013
 
 Refer to the [Hydra Contracts Repository Readme](https://github.com/Hydra-Chain/hydragon-core-contracts#readme) for an overview of all contracts and their functions​​.
 
@@ -142,6 +152,7 @@ Note: No vesting bonuses or RSI bonuses are applied to simple delegation.
 ###### How to Delegate
 
 To delegate tokens, use the delegate function in the HydraDelegation contract:
+[Check addresses](#contract-addresses)
 
 ```solidity
 function delegate(address staker) external payable;
@@ -240,7 +251,7 @@ APR ~ 70.3%
 
 ###### How to Delegate with Vesting
 
-Before delegating with vesting, a Vesting Manager must be created for the user. The VestingManager contract is responsible for managing vested positions and rewards.
+Before delegating with vesting, a Vesting Manager must be created for the user. The Vesting Manager contract is responsible for managing vested positions and rewards.
 See [The Role of the VestingManager Contract](#the-role-of-the-vestingmanager-contract) for details on how to use this contract effectively.
 
 1. Create a Vesting Manager
@@ -256,6 +267,16 @@ function newVestingManager() external;
 **Note:** Create a new VestingManager only if there is no existing Vesting Manager for the user suitable for the desired vested position. Learn how to properly use VestingManagers in [The Role of the VestingManager Contract](#the-role-of-the-vestingmanager-contract) section.
 
 2. Delegate with Vesting
+
+If a user already has a manager and vested position, but he is not sure if a validator is available to open a delegate position with this manager, he can easily check here:
+
+```solidity
+function isPositionAvailable(address staker, address delegator) public view returns (bool)
+```
+
+Where the staker is the validator and the delegator is the manager! <br>
+A position is available when there are no maturing/unclaimed rewards and is not active. <br>
+If the position has delegation from before, it will add new value to the old amount and open a bigger position!
 
 Once the Vesting Manager is created, use the openVestedDelegatePosition function in the Vesting Manager to lock HYDRA tokens for a specified duration:
 
@@ -284,6 +305,26 @@ Where:
 - Delegated Tokens: The total amount of HYDRA being delegated.
 - Vesting Weeks: The duration of the vesting period in weeks.
 - 1.33% Weekly Reduction
+
+###### Liquid debt (Decrease of Lydra)
+
+Opening a vested position and vesting gives delegators a negative debt (not minted Lydra for amount delegated) <br>
+On undelegate with this manager, the user uses this debt and Lydra together. <br>
+Each vesting manager handles its debt independently. <br>
+You can check both debt and how much Lydra needs to be provided for cutting a position from the Hydra Delegation contract:
+
+Liquid debts:
+
+```solidity
+    mapping(address => int256) public liquidityDebts;
+```
+
+By using calculateOwedLiquidTokens you can check for specific vesting manager and amount, how much Lydra you need to provide to cut the position. <br>
+(there is a chance the debt to cover the whole amount and a user does not need to provide Lydra)
+
+```solidity
+        function calculateOwedLiquidTokens(address account, uint256 amount) external view returns (uint256);
+```
 
 ##### Vested Undelegate
 
@@ -332,6 +373,23 @@ Parameters:
 
 **Penalties: **
 Early withdrawals reduce the accrued Vesting Bonus proportionally to the time left in the vesting period.
+
+##### Swap vested position
+
+Delegators can decide to swap a vested position, if the current validator is not working properly, has a high commission, or for whatever reason.
+
+```solidity
+function swapVestedPositionStaker(address oldStaker, address newStaker) external;
+```
+
+Swapping a position from one validator to a new one requires availability with the same vesting manager. This means if with the same vesting manager, a delegator has opened vested positions for all validators, that are active, rewards are maturing or there are left delegation amounts left, then a position cannot be swapped to anyone. <br>
+
+User can easily check for each validator if he can swap positions to specific validators using this function: <br>
+Where the delegator should be the vesting manager and staker is the validator.
+
+```solidity
+function isPositionAvailableForSwap(address staker, address delegator) external view returns (bool);
+```
 
 ##### Rewards Distribution
 
@@ -395,3 +453,153 @@ A single Vesting Manager can simultaneously maintain multiple active positions f
 - Operations Exclusively via Vesting Manager:
 
 All operations related to vested delegation, such as creation, undelegation, and rewards claiming, must be executed through the specific Vesting Manager contract instance.
+
+### How Withdrawing Works
+
+After the undelegating, a user can withdraw the available Hydra after the waiting period! <br>
+Withdraw functions are called in the HydraDelegation contract, except `withdraw` for vested positions.
+
+#### Pending Withdraw
+
+For checking pending withdraws that are not available yet (still in the waiting period):
+
+```solidity
+function pendingWithdrawals(address account) external view returns (uint256);
+```
+
+**Parameter "account" could be a delegator or a vest manager!**
+
+#### Withdrawable
+
+After the waiting period passed the amount should be available for withdrawal, <br>
+user can check with this function:
+
+```solidity
+function withdrawable(address account) external view returns (uint256);
+```
+
+**Parameter "account" could be a delegator or a vest manager!**
+
+#### Withdrawing un-vested position
+
+Withdrawing is done by using the function:
+
+```solidity
+function withdraw(address to) external;
+```
+
+**Parameter "to" is used if we want to withdraw an amount to another wallet!**
+
+#### Withdrawing vested position
+
+For withdrawing from a vested position the withdraw function should be called from the VestingManager contract:
+Withdrawing is done by using the function:
+
+```solidity
+function withdraw(address to) external;
+```
+
+**Parameter "to" is used if we want to withdraw an amount to another wallet!**
+
+# Fetch Additional Data
+
+### How to get Validators Data
+
+You can get the power exponent from the Hydra Chain contract:
+
+```solidity
+    /**
+     * @notice `powerExponent` represents the numerator of the Voting Power Exponent, where the denominator is 10,000.
+     * The Voting Power Exponent is a fractional value between 0.5 and 1, used to exponentially decrease
+     * the voting power of a validator. This mechanism encourages better decentralization of the network.
+     */
+    uint256 public powerExponent;
+```
+
+Get the total voting power of the validators:
+
+```solidity
+function getTotalVotingPower() external view returns (uint256);
+```
+
+Get all Validators that have been part of the HydraChain (including banned or not active)
+
+```solidity
+      function getValidators() external view returns (address[] memory);
+```
+
+You can get the basic details for each validator from the HydraChain contract: <br>
+Where `totalStake` represents the stake + delegation of delegators to this validator.
+
+```solidity
+    function getValidator(
+        address validatorAddress
+    )
+        external
+        view
+        returns (
+            uint256[4] memory blsKey,
+            uint256 stake,
+            uint256 totalStake,
+            uint256 commission,
+            uint256 withdrawableRewards,
+            uint256 votingPower,
+            ValidatorStatus status,
+            bool isBanInitiated
+        );
+```
+
+Also, get the pending commission for the validator and when the validator can trigger an update of it from the HydraDelegation contract:
+
+```solidity
+    /// @notice The pending commission per staker in percentage
+    mapping(address => uint256) public pendingCommissionPerStaker;
+```
+
+```solidity
+    /// @notice Timestamp after which the commission can be updated
+    mapping(address => uint256) public commissionUpdateAvailableAt;
+```
+
+### Getting the current epoch
+
+Get the current epoch from the HydraChain contract:
+
+```solidity
+function getCurrentEpochId() external view returns (uint256);
+```
+
+### APR Data and Bonuses
+
+The following functions can be used for calculating rewards or showing current bonuses/base APR. <br>
+Those functions are called from the APRCalculator contract:
+
+Get the base APR:
+
+```solidity
+    function getBaseAPR() public pure returns (uint256);
+```
+
+See the Dominator:
+
+```solidity
+    function getDENOMINATOR() public pure returns (uint256);
+```
+
+Get the vesting bonus for a specific number of weeks (between 1 - 52):
+
+```solidity
+    function getVestingBonus(uint256 weeksCount) public view returns (uint256 nominator);
+```
+
+Get the current Macro Factor that is applied to the rewards:
+
+```solidity
+    function getMacroFactor() public view returns (uint256);
+```
+
+Get the RSI Bonus that is used for the vesting positions:
+
+```solidity
+    function getRSIBonus() public view returns (uint256);
+```
